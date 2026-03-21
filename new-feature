@@ -44,4 +44,31 @@ if [[ -n "$WORKSPACE_ID" ]]; then
   cmux rename-workspace --workspace "$WORKSPACE_ID" "$FEATURE_NAME"
 fi
 
+NVIM_CMD='nvim -c "lua Snacks.picker.files()"'
+
+# ── 8. Open nvim in a right-side split ───────────────────────────────────────
+if [[ -n "$WORKSPACE_ID" ]]; then
+  # Capture Claude's pane ID before splitting so we can refocus it afterward
+  CLAUDE_PANE_ID=$(cmux list-panes --workspace "$WORKSPACE_ID" 2>/dev/null \
+    | grep -oE 'pane:[0-9]+' | head -1)
+
+  # Create the right split and capture its surface ID
+  NVIM_SURFACE_ID=$(cmux new-split right --workspace "$WORKSPACE_ID" 2>/dev/null \
+    | grep -oE 'surface:[0-9]+' | head -1)
+
+  if [[ -n "$NVIM_SURFACE_ID" ]]; then
+    # Target the nvim surface explicitly
+    cmux send --workspace "$WORKSPACE_ID" --surface "$NVIM_SURFACE_ID" \
+      "cd '$WORKTREE_DIR' && $NVIM_CMD" >/dev/null
+    cmux send-key --workspace "$WORKSPACE_ID" --surface "$NVIM_SURFACE_ID" enter >/dev/null
+    echo "Opened nvim in right pane"
+
+    # Refocus Claude's pane
+    [[ -n "$CLAUDE_PANE_ID" ]] && \
+      cmux focus-pane --pane "$CLAUDE_PANE_ID" --workspace "$WORKSPACE_ID"
+  else
+    echo "Note: could not open nvim pane — run: nvim '$WORKTREE_DIR' manually if needed"
+  fi
+fi
+
 echo "Opened cmux workspace \"$FEATURE_NAME\" → $WORKTREE_DIR"

@@ -17,6 +17,7 @@ The result: multiple features in flight simultaneously, each with its own AI age
 
 - [cmux](https://cmux.com) — terminal with workspace/tab management CLI
 - [Claude Code](https://claude.ai/code) — `claude` CLI available in PATH
+- [Neovim](https://neovim.io) — `nvim` CLI available in PATH. I recommend [LazyVim](https://lazyvim-ambitious-devs.phillips.codes/).
 - git 2.5+
 
 ## Installation
@@ -50,9 +51,11 @@ Feature name: user auth redesign
 3. Ensures `.worktrees/` is in `.gitignore` (adds it if missing)
 4. Fetches `origin` and creates a worktree branching from `origin/main`
 5. Opens a new named cmux workspace pointed at the worktree
-6. Starts `claude --dangerously-skip-permissions` in that workspace
+6. Starts `claude --dangerously-skip-permissions` in the left pane
+7. Opens LazyVim (in file picker mode) in a right split pane for browsing/reviewing files
+8. Refocuses the Claude pane
 
-**Result:** A new cmux tab named `"user auth redesign"` with Claude running in `.worktrees/user-auth-redesign/` on branch `feature/user-auth-redesign`.
+**Result:** A new cmux tab named `"user auth redesign"` with Claude on the left and nvim on the right, both scoped to `.worktrees/user-auth-redesign/` on branch `feature/user-auth-redesign`.
 
 ---
 
