@@ -21,8 +21,9 @@ WORKTREE_DIR="$GIT_ROOT/.worktrees/$SLUG"
 
 # ── 4. Ensure .worktrees/ is gitignored ─────────────────────────────────────
 if ! git -C "$GIT_ROOT" check-ignore -q .worktrees 2>/dev/null; then
-  echo ".worktrees/" >> "$GIT_ROOT/.gitignore"
-  echo "Added .worktrees/ to .gitignore"
+  echo "Error: .worktrees/ is not ignored by git in this repository."
+  echo "Please add '.worktrees/' to your .gitignore before running this script."
+  exit 1
 fi
 
 # ── 5. Fetch latest and create git worktree from origin/main ─────────────────
