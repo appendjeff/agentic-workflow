@@ -2,6 +2,8 @@
 
 Shell scripts for running parallel AI-assisted feature development using [cmux](https://cmux.com), git worktrees, and [Claude Code](https://claude.ai/code).
 
+**[Watch the demo →](https://github.com/appendjeff/agentic-workflow/wiki/Demo-of-the-workflow)**
+
 ## Motivation
 
 When working with agentic AI tools like Claude Code, context isolation matters. Switching branches mid-session or sharing a working directory across multiple features leads to confused agents and tangled diffs.
