@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+# done-feature — clean up a finished feature worktree, branch, and cmux workspace
+# Run from inside the worktree you want to remove.
+set -e
+
+# ── 1. Guard: must be inside a .worktrees/ directory ─────────────────────────
+WORKTREE_DIR=$(pwd)
+if [[ "$WORKTREE_DIR" != *"/.worktrees/"* ]]; then
+  echo "Error: not inside a .worktrees/ directory. Run this from inside the feature worktree."
+  exit 1
+fi
+
+# ── 2. Capture context before leaving ────────────────────────────────────────
+BRANCH=$(git branch --show-current)
+MAIN_ROOT=$(git worktree list --porcelain | awk 'NR==1{print $2}')
+WORKSPACE_ID="${CMUX_WORKSPACE_ID:-}"
+
+[[ -z "$BRANCH" ]] && { echo "Error: could not determine current branch"; exit 1; }
+[[ -z "$MAIN_ROOT" ]] && { echo "Error: could not determine main worktree root"; exit 1; }
+
+echo "Cleaning up:"
+echo "  Branch:    $BRANCH"
+echo "  Worktree:  $WORKTREE_DIR"
+echo "  Workspace: ${WORKSPACE_ID:-"(none detected)"}"
+echo
+
+# ── 3. Move to main worktree before removing current one ─────────────────────
+cd "$MAIN_ROOT"
+
+# ── 4. Remove the worktree ───────────────────────────────────────────────────
+git worktree remove "$WORKTREE_DIR"
+echo "Removed worktree: $WORKTREE_DIR"
+
+# ── 5. Delete the branch ─────────────────────────────────────────────────────
+if git branch -d "$BRANCH" 2>/dev/null; then
+  echo "Deleted branch: $BRANCH"
+else
+  read -rp "Branch '$BRANCH' is not fully merged. Force delete? [y/N] " CONFIRM
+  if [[ "$CONFIRM" =~ ^[Yy]$ ]]; then
+    git branch -D "$BRANCH"
+    echo "Force deleted branch: $BRANCH"
+  else
+    echo "Branch kept: $BRANCH"
+  fi
+fi
+
+# ── 6. Close the cmux workspace (last — this kills the shell) ────────────────
+if [[ -n "$WORKSPACE_ID" ]]; then
+  cmux close-workspace --workspace "$WORKSPACE_ID"
+else
+  echo "No CMUX_WORKSPACE_ID found — close the workspace manually."
+fi

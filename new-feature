@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# new-feature — create a cmux workspace + git worktree + claude session
+set -e
+
+# ── 1. Prompt ────────────────────────────────────────────────────────────────
+read -rp "Feature name: " FEATURE_NAME
+[[ -z "$FEATURE_NAME" ]] && { echo "Error: feature name required"; exit 1; }
+
+# ── 2. Derive branch slug ────────────────────────────────────────────────────
+SLUG=$(echo "$FEATURE_NAME" \
+  | tr '[:upper:]' '[:lower:]' \
+  | sed 's/[^a-z0-9]/-/g' \
+  | sed 's/-\+/-/g' \
+  | sed 's/^-//;s/-$//')
+BRANCH="feature/$SLUG"
+
+# ── 3. Resolve git root ──────────────────────────────────────────────────────
+GIT_ROOT=$(git rev-parse --show-toplevel 2>/dev/null) \
+  || { echo "Error: not inside a git repository"; exit 1; }
+WORKTREE_DIR="$GIT_ROOT/.worktrees/$SLUG"
+
+# ── 4. Ensure .worktrees/ is gitignored ─────────────────────────────────────
+if ! git -C "$GIT_ROOT" check-ignore -q .worktrees 2>/dev/null; then
+  echo ".worktrees/" >> "$GIT_ROOT/.gitignore"
+  echo "Added .worktrees/ to .gitignore"
+fi
+
+# ── 5. Fetch latest and create git worktree from origin/main ─────────────────
+git -C "$GIT_ROOT" fetch origin
+git -C "$GIT_ROOT" worktree add "$WORKTREE_DIR" -b "$BRANCH" origin/main
+echo "Worktree: $WORKTREE_DIR  (branch: $BRANCH)"
+
+# ── 6. Create cmux workspace (--cwd and --command handle everything) ─────────
+WORKSPACE_OUTPUT=$(cmux new-workspace \
+  --cwd "$WORKTREE_DIR" \
+  --command "claude --dangerously-skip-permissions")
+
+# Parse full workspace ref from "OK workspace:N" (e.g. "workspace:2")
+WORKSPACE_ID=$(echo "$WORKSPACE_OUTPUT" | grep -oE 'workspace:[0-9]+')
+
+# ── 7. Rename the NEW workspace by targeting it explicitly with --workspace ───
+if [[ -n "$WORKSPACE_ID" ]]; then
+  cmux rename-workspace --workspace "$WORKSPACE_ID" "$FEATURE_NAME"
+fi
+
+echo "Opened cmux workspace \"$FEATURE_NAME\" → $WORKTREE_DIR"

@@ -1,0 +1,26 @@
+# Secrets and credentials
+*.env
+.env*
+*.pem
+*.key
+*.p12
+*.pfx
+*_rsa
+*_dsa
+*_ecdsa
+*_ed25519
+id_rsa*
+id_dsa*
+secrets.*
+credentials.*
+config.local.*
+*.token
+*.secret
+
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+*.swp
