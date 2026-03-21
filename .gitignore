@@ -24,4 +24,7 @@ config.local.*
 .vscode/
 .idea/
 *.swp
+
+# Ignore worktrees
 .worktrees/
+
