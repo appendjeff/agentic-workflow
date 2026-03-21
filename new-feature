@@ -71,4 +71,23 @@ if [[ -n "$WORKSPACE_ID" ]]; then
   fi
 fi
 
+# ── 9. Open terminal in a bottom split under Claude ──────────────────────────
+if [[ -n "$WORKSPACE_ID" ]] && [[ -n "$CLAUDE_PANE_ID" ]]; then
+  TERM_SURFACE_ID=$(cmux new-split down --workspace "$WORKSPACE_ID" 2>/dev/null \
+    | grep -oE 'surface:[0-9]+' | head -1)
+
+  if [[ -n "$TERM_SURFACE_ID" ]]; then
+    # Grow Claude's pane downward to shrink the terminal to ~20%
+    cmux resize-pane --workspace "$WORKSPACE_ID" --pane "$CLAUDE_PANE_ID" -D --amount 15 >/dev/null 2>&1 \
+      || true
+    echo "Opened terminal in bottom pane"
+
+    # Refocus Claude's pane
+    [[ -n "$CLAUDE_PANE_ID" ]] && \
+      cmux focus-pane --pane "$CLAUDE_PANE_ID" --workspace "$WORKSPACE_ID"
+  else
+    echo "Note: could not open terminal pane"
+  fi
+fi
+
 echo "Opened cmux workspace \"$FEATURE_NAME\" → $WORKTREE_DIR"

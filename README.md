@@ -53,9 +53,10 @@ Feature name: user auth redesign
 5. Opens a new named cmux workspace pointed at the worktree
 6. Starts `claude --dangerously-skip-permissions` in the left pane
 7. Opens LazyVim (in file picker mode) in a right split pane for browsing/reviewing files
-8. Refocuses the Claude pane
+8. Opens a terminal in a bottom split under Claude (~20% height)
+9. Refocuses the Claude pane
 
-**Result:** A new cmux tab named `"user auth redesign"` with Claude on the left and nvim on the right, both scoped to `.worktrees/user-auth-redesign/` on branch `feature/user-auth-redesign`.
+**Result:** A new cmux tab named `"user auth redesign"` with Claude on the top-left, a terminal on the bottom-left (~20%), and nvim on the right — all scoped to `.worktrees/user-auth-redesign/` on branch `feature/user-auth-redesign`.
 
 ---
 
