@@ -2,6 +2,13 @@
 # new-feature — create a cmux workspace + git worktree + claude session
 set -e
 
+# ── 0. Refuse to run from inside an existing worktree ────────────────────────
+if [[ "$(pwd)" == *"/.worktrees/"* ]]; then
+  echo "Error: already inside a worktree ($(pwd))."
+  echo "Switch to your main repo directory before creating a new feature."
+  exit 1
+fi
+
 # ── 1. Prompt ────────────────────────────────────────────────────────────────
 read -rp "Feature name: " FEATURE_NAME
 [[ -z "$FEATURE_NAME" ]] && { echo "Error: feature name required"; exit 1; }
