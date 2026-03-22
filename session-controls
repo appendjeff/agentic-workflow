@@ -3,6 +3,9 @@
 # Auto-launched by new-feature in the bottom pane of the cmux workspace.
 set -e
 
+# Ctrl-Z exits cleanly instead of suspending
+trap 'exit 0' TSTP
+
 # ── Dependency check ─────────────────────────────────────────────────────────
 if ! command -v gum &>/dev/null; then
   echo "Error: 'gum' is not installed."

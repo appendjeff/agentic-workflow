@@ -89,6 +89,7 @@ if [[ -n "$WORKSPACE_ID" ]] && [[ -n "$CLAUDE_PANE_ID" ]]; then
   TERM_SURFACE_ID=$(cmux new-split down --workspace "$WORKSPACE_ID" 2>/dev/null \
     | grep -oE 'surface:[0-9]+' | head -1)
 
+  # The resize code does not work
   if [[ -n "$TERM_SURFACE_ID" ]]; then
     # Grow Claude's pane downward to shrink the terminal to ~20%
     cmux resize-pane --workspace "$WORKSPACE_ID" --pane "$CLAUDE_PANE_ID" -D --amount 15 >/dev/null 2>&1 \
