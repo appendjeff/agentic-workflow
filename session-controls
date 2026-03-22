@@ -3,9 +3,6 @@
 # Auto-launched by new-feature in the bottom pane of the cmux workspace.
 set -e
 
-# Ctrl-Z exits cleanly instead of suspending
-trap 'exit 0' TSTP
-
 # ── Dependency check ─────────────────────────────────────────────────────────
 if ! command -v gum &>/dev/null; then
   echo "Error: 'gum' is not installed."
@@ -33,7 +30,7 @@ while true; do
   ACTION=$(gum choose \
     "End Session" \
   ) || true
-  [[ -z "$ACTION" ]] && continue
+  [[ -z "$ACTION" ]] && exit 0  # Escape/q/Ctrl-Z exits the TUI
 
   case "$ACTION" in
     "End Session")
