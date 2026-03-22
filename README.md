@@ -2,7 +2,7 @@
 
 Shell scripts for running parallel AI-assisted feature development using [cmux](https://cmux.com), git worktrees, and [Claude Code](https://claude.ai/code).
 
-https://github.com/user-attachments/assets/95cb2e28-b45f-4d92-9eb0-c1eeb6f02d83
+https://github.com/user-attachments/assets/b25d36db-501f-418a-b34b-902a3af5bd8d
 
 ## Motivation
 
