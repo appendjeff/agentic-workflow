@@ -2,6 +2,21 @@
 # new-feature — create a cmux workspace + git worktree + claude session
 set -e
 
+# ── Dependency check ─────────────────────────────────────────────────────────
+if ! command -v gum &>/dev/null; then
+  echo "Error: 'gum' is not installed. Install with: brew install gum"
+  exit 1
+fi
+
+# ── Flags ─────────────────────────────────────────────────────────────────────
+MULTILINE=false
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --multiline|-m) MULTILINE=true; shift ;;
+    *) echo "Unknown flag: $1"; exit 1 ;;
+  esac
+done
+
 # ── 0. Refuse to run from inside an existing worktree ────────────────────────
 if [[ "$(pwd)" == *"/.worktrees/"* ]]; then
   echo "Error: already inside a worktree ($(pwd))."
@@ -10,11 +25,15 @@ if [[ "$(pwd)" == *"/.worktrees/"* ]]; then
 fi
 
 # ── 1. Prompt ────────────────────────────────────────────────────────────────
-read -rp "Feature name: " FEATURE_NAME
+FEATURE_NAME=$(gum input --placeholder "Feature name...")
 [[ -z "$FEATURE_NAME" ]] && { echo "Error: feature name required"; exit 1; }
 
 # ── 1b. Optional prompt ──────────────────────────────────────────────────────
-read -rp "Initial prompt (optional): " INITIAL_PROMPT
+if [[ "$MULTILINE" == true ]]; then
+  INITIAL_PROMPT=$(gum write --placeholder "Initial prompt (optional)...")
+else
+  INITIAL_PROMPT=$(gum input --placeholder "Initial prompt (optional)...")
+fi
 
 # ── 2. Derive branch slug ────────────────────────────────────────────────────
 SLUG=$(echo "$FEATURE_NAME" \
