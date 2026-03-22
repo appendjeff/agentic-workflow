@@ -80,6 +80,7 @@ if [[ -n "$WORKSPACE_ID" ]]; then
     cmux send --workspace "$WORKSPACE_ID" --surface "$NVIM_SURFACE_ID" \
       "cd '$WORKTREE_DIR' && $NVIM_CMD" >/dev/null
     cmux send-key --workspace "$WORKSPACE_ID" --surface "$NVIM_SURFACE_ID" enter >/dev/null
+    cmux rename-tab --workspace "$WORKSPACE_ID" --surface "$NVIM_SURFACE_ID" "Code" >/dev/null
     echo "Opened nvim in right pane"
 
     # Refocus Claude's pane
@@ -103,6 +104,7 @@ if [[ -n "$WORKSPACE_ID" ]] && [[ -n "$CLAUDE_PANE_ID" ]]; then
     cmux send --workspace "$WORKSPACE_ID" --surface "$TERM_SURFACE_ID" \
       "cd '$WORKTREE_DIR' && CMUX_WORKSPACE_ID='$WORKSPACE_ID' session-controls" >/dev/null
     cmux send-key --workspace "$WORKSPACE_ID" --surface "$TERM_SURFACE_ID" enter >/dev/null
+    cmux rename-tab --workspace "$WORKSPACE_ID" --surface "$TERM_SURFACE_ID" "Session Controls" >/dev/null
     echo "Opened session-controls in bottom pane"
 
     # Refocus Claude's pane
