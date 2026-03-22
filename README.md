@@ -2,7 +2,7 @@
 
 Shell scripts for running parallel AI-assisted feature development using [cmux](https://cmux.com), git worktrees, and [Claude Code](https://claude.ai/code).
 
-**[Watch the demo →](https://github.com/appendjeff/agentic-workflow/wiki/Demo-of-the-workflow)**
+https://github.com/user-attachments/assets/95cb2e28-b45f-4d92-9eb0-c1eeb6f02d83
 
 ## Motivation
 
