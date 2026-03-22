@@ -29,11 +29,12 @@ gum style \
 while true; do
   ACTION=$(gum choose \
     "End Session" \
-  )
+  ) || true
+  [[ -z "$ACTION" ]] && continue
 
   case "$ACTION" in
     "End Session")
-      if gum confirm "End this session?" --selected.foreground="1"; then
+      if gum confirm "End this session?" --selected.foreground="1"; then  # red "Yes" button
         done-feature
         # done-feature calls cmux close-workspace, which terminates this shell.
         # The break below is unreachable but documents intent for readers.
