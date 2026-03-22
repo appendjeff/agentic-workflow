@@ -20,6 +20,7 @@ The result: multiple features in flight simultaneously, each with its own AI age
 - [cmux](https://cmux.com) — terminal with workspace/tab management CLI
 - [Claude Code](https://claude.ai/code) — `claude` CLI available in PATH
 - [Neovim](https://neovim.io) — `nvim` CLI available in PATH. I recommend [LazyVim](https://lazyvim-ambitious-devs.phillips.codes/).
+- [gum](https://github.com/charmbracelet/gum) — renders the session controls TUI (menus, confirmations). Install with `brew install gum`.
 - git 2.5+
 
 ## Installation
