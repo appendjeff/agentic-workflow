@@ -34,7 +34,7 @@ while true; do
 
   case "$ACTION" in
     "End Session")
-      if gum confirm "End this session?" --selected.foreground="1"; then  # red "Yes" button
+      if gum confirm --selected.foreground="1" "End this session?"; then  # red "Yes" button
         done-feature
         # done-feature calls cmux close-workspace, which terminates this shell.
         # The break below is unreachable but documents intent for readers.
