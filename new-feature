@@ -30,7 +30,10 @@ FEATURE_NAME=$(gum input --placeholder "Feature name...")
 
 # ── 1b. Optional prompt ──────────────────────────────────────────────────────
 if [[ "$MULTILINE" == true ]]; then
-  INITIAL_PROMPT=$(gum write --placeholder "Initial prompt (optional)...")
+  TMPFILE=$(mktemp /tmp/new-feature-prompt.XXXXXX)
+  nvim "$TMPFILE"
+  INITIAL_PROMPT=$(cat "$TMPFILE")
+  rm -f "$TMPFILE"
 else
   INITIAL_PROMPT=$(gum input --placeholder "Initial prompt (optional)...")
 fi
