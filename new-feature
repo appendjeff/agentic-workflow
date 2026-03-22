@@ -86,14 +86,12 @@ fi
 
 # ── 9. Open session-controls in a bottom split under Claude ──────────────────
 if [[ -n "$WORKSPACE_ID" ]] && [[ -n "$CLAUDE_PANE_ID" ]]; then
-  TERM_SURFACE_ID=$(cmux new-split down --workspace "$WORKSPACE_ID" 2>/dev/null \
+  TERM_SURFACE_ID=$(cmux new-split down --workspace "$WORKSPACE_ID" --surface "$CLAUDE_SURFACE_ID" 2>/dev/null \
     | grep -oE 'surface:[0-9]+' | head -1)
 
-  # The resize code does not work
   if [[ -n "$TERM_SURFACE_ID" ]]; then
-    # Grow Claude's pane downward to shrink the terminal to ~20%
-    cmux resize-pane --workspace "$WORKSPACE_ID" --pane "$CLAUDE_PANE_ID" -D --amount 15 >/dev/null 2>&1 \
-      || true
+    # Shrink session-controls to ~20% of height by expanding Claude's pane down
+    cmux resize-pane --workspace "$WORKSPACE_ID" --pane "$CLAUDE_PANE_ID" -D --amount 15
 
     # Launch session-controls in the bottom pane
     cmux send --workspace "$WORKSPACE_ID" --surface "$TERM_SURFACE_ID" \
