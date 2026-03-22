@@ -51,7 +51,7 @@ WORKSPACE_ID=$(echo "$WORKSPACE_OUTPUT" | grep -oE 'workspace:[0-9]+')
 
 # ── 7. Rename the NEW workspace by targeting it explicitly with --workspace ───
 if [[ -n "$WORKSPACE_ID" ]]; then
-  cmux rename-workspace --workspace "$WORKSPACE_ID" "$FEATURE_NAME"
+  cmux rename-workspace --workspace "$WORKSPACE_ID" "feat: $FEATURE_NAME"
 fi
 
 NVIM_CMD='nvim -c "lua Snacks.picker.files()"'
