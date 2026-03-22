@@ -1,6 +1,5 @@
 # Agentic Workflow
-
-Shell scripts for running parallel AI-assisted feature development using [cmux](https://cmux.com), git worktrees, and [Claude Code](https://claude.ai/code).
+An opinionated workflow for parallel AI-assisted feature development using [cmux](https://cmux.com), git worktrees, [Claude Code](https://claude.ai/code) and [LazyVim](https://www.lazyvim.org). This repo contains a couple of shell scripts for the workflow. 
 
 https://github.com/user-attachments/assets/b25d36db-501f-418a-b34b-902a3af5bd8d
 
