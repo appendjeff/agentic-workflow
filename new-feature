@@ -42,9 +42,15 @@ git -C "$GIT_ROOT" worktree add "$WORKTREE_DIR" -b "$BRANCH" origin/main
 echo "Worktree: $WORKTREE_DIR  (branch: $BRANCH)"
 
 # ── 6. Create cmux workspace (--cwd and --command handle everything) ─────────
+if [[ -n "$INITIAL_PROMPT" ]]; then
+  CLAUDE_CMD="claude --dangerously-skip-permissions $(printf '%q' "$INITIAL_PROMPT")"
+else
+  CLAUDE_CMD="claude --dangerously-skip-permissions"
+fi
+
 WORKSPACE_OUTPUT=$(cmux new-workspace \
   --cwd "$WORKTREE_DIR" \
-  --command "claude --dangerously-skip-permissions")
+  --command "$CLAUDE_CMD")
 
 # Parse full workspace ref from "OK workspace:N" (e.g. "workspace:2")
 WORKSPACE_ID=$(echo "$WORKSPACE_OUTPUT" | grep -oE 'workspace:[0-9]+')
@@ -105,14 +111,6 @@ if [[ -n "$WORKSPACE_ID" ]] && [[ -n "$CLAUDE_PANE_ID" ]]; then
   else
     echo "Note: could not open session-controls pane"
   fi
-fi
-
-# ── 10. Send initial prompt to Claude if provided ────────────────────────────
-if [[ -n "$INITIAL_PROMPT" ]] && [[ -n "$WORKSPACE_ID" ]] && [[ -n "$CLAUDE_SURFACE_ID" ]]; then
-  sleep 2  # allow Claude to finish initializing
-  cmux send --workspace "$WORKSPACE_ID" --surface "$CLAUDE_SURFACE_ID" "$INITIAL_PROMPT" >/dev/null
-  cmux send-key --workspace "$WORKSPACE_ID" --surface "$CLAUDE_SURFACE_ID" enter >/dev/null
-  echo "Sent initial prompt to Claude"
 fi
 
 echo "Opened cmux workspace \"$FEATURE_NAME\" → $WORKTREE_DIR"
