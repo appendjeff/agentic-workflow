@@ -91,7 +91,7 @@ if [[ -n "$WORKSPACE_ID" ]] && [[ -n "$CLAUDE_PANE_ID" ]]; then
 
   if [[ -n "$TERM_SURFACE_ID" ]]; then
     # Shrink session-controls to ~20% of height by expanding Claude's pane down
-    cmux resize-pane --workspace "$WORKSPACE_ID" --pane "$CLAUDE_PANE_ID" -D --amount 100
+    cmux resize-pane --workspace "$WORKSPACE_ID" --pane "$CLAUDE_PANE_ID" -D --amount 200
 
     # Launch session-controls in the bottom pane
     cmux send --workspace "$WORKSPACE_ID" --surface "$TERM_SURFACE_ID" \
