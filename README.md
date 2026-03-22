@@ -28,13 +28,13 @@ The result: multiple features in flight simultaneously, each with its own AI age
 Clone or copy the scripts into a directory on your `$PATH`:
 
 ```bash
-git clone https://github.com/appendjeff/agentic-workflow.git ~/bin
+git clone https://github.com/appendjeff/agentic-workflow.git ~/agent-bin
 ```
 
-Add `~/bin` to your PATH if needed (e.g. in `~/.zshrc`):
+Add `~/agent-bin` to your PATH if needed (e.g. in `~/.zshrc`):
 
 ```bash
-export PATH="$HOME/bin:$PATH"
+export PATH="$HOME/agent-bin:$PATH"
 ```
 
 ## Commands
