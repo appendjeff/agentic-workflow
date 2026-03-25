@@ -28,8 +28,21 @@ echo
 cd "$MAIN_ROOT"
 
 # ── 4. Remove the worktree ───────────────────────────────────────────────────
-git worktree remove "$WORKTREE_DIR"
-echo "Removed worktree: $WORKTREE_DIR"
+if git worktree remove "$WORKTREE_DIR" 2>/dev/null; then
+  echo "Removed worktree: $WORKTREE_DIR"
+else
+  echo "Worktree has uncommitted changes:"
+  git -C "$WORKTREE_DIR" status --short
+  echo
+  read -rp "Discard changes and force remove? [y/N] " CONFIRM
+  if [[ "$CONFIRM" =~ ^[Yy]$ ]]; then
+    git worktree remove --force "$WORKTREE_DIR"
+    echo "Force removed worktree: $WORKTREE_DIR"
+  else
+    echo "Aborted. Worktree kept: $WORKTREE_DIR"
+    exit 0
+  fi
+fi
 
 # ── 5. Delete the branch ─────────────────────────────────────────────────────
 if git branch -d "$BRANCH" 2>/dev/null; then
